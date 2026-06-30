@@ -27,13 +27,25 @@ export async function POST(request: Request) {
     const response = NextResponse.json({ ok: true });
     setAuthCookies(response, tokens);
     return response;
-  } catch {
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+
+    if (message.includes("NEXT_PUBLIC_API_URL")) {
+      return NextResponse.json(
+        {
+          error: "NEXT_PUBLIC_API_URL no esta configurada.",
+          code: "API_URL_NOT_CONFIGURED",
+        },
+        { status: 500 },
+      );
+    }
+
     return NextResponse.json(
       {
-        error: "No fue posible iniciar sesion.",
+        error: "No fue posible conectar con el backend de autenticacion.",
         code: "AUTH_SERVICE_UNAVAILABLE",
       },
-      { status: 500 },
+      { status: 503 },
     );
   }
 }
