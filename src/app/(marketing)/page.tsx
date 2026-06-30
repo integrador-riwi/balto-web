@@ -1,88 +1,103 @@
 import Image from "next/image";
 import {
   ArrowRight,
+  Bell,
   Bot,
   CalendarCheck,
   CheckCircle2,
   Download,
+  Heart,
   HeartHandshake,
   MapPin,
   Navigation,
-  PawPrint,
   ShieldCheck,
   Sparkles,
   Star,
   Stethoscope,
   Users,
-  WandSparkles,
 } from "lucide-react";
 
 const apkUrl = process.env.NEXT_PUBLIC_APK_URL ?? "/downloads/balto.apk";
 const appVersion = process.env.NEXT_PUBLIC_APP_VERSION ?? "local";
 
+const images = {
+  hero:
+    "https://images.pexels.com/photos/5748620/pexels-photo-5748620.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  walking:
+    "https://images.pexels.com/photos/62379/pexels-photo-62379.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  cat:
+    "https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg?auto=compress&cs=tinysrgb&w=900",
+  puppies:
+    "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=900",
+  vet:
+    "https://images.pexels.com/photos/6235020/pexels-photo-6235020.jpeg?auto=compress&cs=tinysrgb&w=1200",
+};
+
 const navLinks = [
   { label: "Paseos", href: "#paseos" },
+  { label: "Cuidado", href: "#cuidado" },
   { label: "Servicios", href: "#servicios" },
-  { label: "IA", href: "#ia" },
-  { label: "APK", href: "#apk" },
+  { label: "Descarga", href: "#apk" },
 ];
 
-const trustStats = [
-  { value: "24/7", label: "seguimiento de rutas" },
-  { value: "KYC", label: "walkers verificados" },
-  { value: "Vet", label: "red de servicios pet care" },
-];
-
-const modules = [
+const featureCards = [
   {
-    title: "Walk Planner",
-    description: "Agenda paseos, confirma disponibilidad y acompana cada ruta.",
+    title: "Agenda paseos sin enredos",
+    description:
+      "Elige un walker, revisa su perfil y coordina la rutina de tu mascota desde la app.",
     icon: CalendarCheck,
-    tone: "bg-[#eafbf0] text-[#2f8a5b]",
   },
   {
-    title: "Marketplace vet",
-    description: "Veterinarias y servicios visibles con verificacion manual.",
+    title: "Sigue la ruta en vivo",
+    description:
+      "Mira el recorrido, la duracion y el estado del paseo mientras sucede.",
+    icon: Navigation,
+  },
+  {
+    title: "Walkers verificados",
+    description:
+      "Perfiles revisados para que tu perro salga con alguien de confianza.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Servicios cerca de ti",
+    description:
+      "Encuentra veterinarias y aliados pet care para completar el cuidado.",
     icon: Stethoscope,
-    tone: "bg-[#fcf8ee] text-[#8d5b13]",
-  },
-  {
-    title: "Balto Copilot",
-    description: "Recomendaciones utiles para rutinas, bienestar y actividad.",
-    icon: Bot,
-    tone: "bg-[#e8fbf8] text-[#16857d]",
   },
 ];
 
-const reviewFlow = [
-  "Perfil de mascota",
-  "Walker verificado",
-  "Ruta en vivo",
-  "Resumen del paseo",
+const careHighlights = [
+  "Perfil de mascota con informacion importante",
+  "Recordatorios y senales de bienestar",
+  "Historial de paseos y actividad",
+  "Comunidad para duenos, walkers y negocios",
 ];
 
-function BrandMark({ compact = false }: { compact?: boolean }) {
+function BrandMark({ light = false }: { light?: boolean }) {
   return (
     <div className="flex items-center gap-3">
       <Image
         src="/balto-app-icon.png"
         alt="Balto"
-        width={compact ? 42 : 50}
-        height={compact ? 42 : 50}
+        width={46}
+        height={46}
         className="rounded-2xl shadow-[0_16px_35px_rgba(109,124,255,0.2)]"
-        priority={!compact}
+        priority
       />
       <div>
         <p
-          className={
-            compact
-              ? "text-lg font-black leading-none text-[#16215c]"
-              : "text-2xl font-black leading-none text-[#16215c]"
-          }
+          className={`text-2xl font-black leading-none ${
+            light ? "text-white" : "text-[#16215c]"
+          }`}
         >
           Balto
         </p>
-        <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-[#68d391]">
+        <p
+          className={`mt-1 text-xs font-black uppercase tracking-[0.18em] ${
+            light ? "text-white/70" : "text-[#68d391]"
+          }`}
+        >
           Walks
         </p>
       </div>
@@ -90,35 +105,58 @@ function BrandMark({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function PhoneMockup() {
+function PetPhoto({
+  src,
+  alt,
+  className = "",
+  shape = "42% 58% 48% 52% / 52% 38% 62% 48%",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  shape?: string;
+}) {
   return (
-    <div className="relative mx-auto w-full max-w-[340px]">
-      <div className="absolute -left-8 top-12 hidden rounded-2xl border border-white/70 bg-white/85 p-3 shadow-xl shadow-[#16215c]/10 backdrop-blur md:block">
+    <Image
+      src={src}
+      alt={alt}
+      width={1200}
+      height={900}
+      sizes="(max-width: 768px) 100vw, 50vw"
+      className={`h-full w-full object-cover ${className}`}
+      loading="lazy"
+      style={{ borderRadius: shape }}
+    />
+  );
+}
+
+function AppPreview() {
+  return (
+    <div className="relative mx-auto w-full max-w-[330px]">
+      <div className="absolute -left-14 top-10 hidden h-36 w-36 rotate-[-8deg] overflow-hidden border-[8px] border-white bg-white shadow-2xl shadow-[#16215c]/15 md:block">
+        <PetPhoto
+          src={images.cat}
+          alt="Gato tranquilo en casa"
+          shape="38% 62% 45% 55% / 46% 42% 58% 54%"
+        />
+      </div>
+
+      <div className="absolute -right-10 bottom-28 z-20 hidden rounded-3xl border border-white/80 bg-white/90 p-3 shadow-xl shadow-[#16215c]/12 backdrop-blur lg:block">
         <div className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#eafbf0] text-[#2f8a5b]">
-            <ShieldCheck className="h-5 w-5" />
+          <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#eafbf0] text-[#2f8a5b]">
+            <CheckCircle2 className="h-5 w-5" />
           </span>
           <div>
-            <p className="text-xs font-black text-[#16215c]">Walker OK</p>
-            <p className="text-[11px] text-[#687280]">KYC aprobado</p>
+            <p className="text-xs font-black text-[#16215c]">Paseo seguro</p>
+            <p className="text-[11px] font-semibold text-[#687280]">
+              walker verificado
+            </p>
           </div>
         </div>
       </div>
 
-      <div className="absolute -right-7 bottom-24 hidden rounded-2xl border border-white/70 bg-white/90 p-3 shadow-xl shadow-[#16215c]/10 backdrop-blur lg:block">
-        <div className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#fff7e6] text-[#b56e00]">
-            <Star className="h-5 w-5 fill-current" />
-          </span>
-          <div>
-            <p className="text-xs font-black text-[#16215c]">4.9/5</p>
-            <p className="text-[11px] text-[#687280]">cuidado confiable</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="relative rounded-[2.75rem] border border-[#16215c]/15 bg-[#16215c] p-3 shadow-2xl shadow-[#6d7cff]/25">
-        <div className="overflow-hidden rounded-[2.2rem] bg-[#fbfcff]">
+      <div className="relative rounded-[2.8rem] border border-[#16215c]/15 bg-[#16215c] p-3 shadow-2xl shadow-[#6d7cff]/25">
+        <div className="overflow-hidden rounded-[2.25rem] bg-[#fbfcff]">
           <div className="flex items-center justify-between bg-white px-5 pb-2 pt-4 text-[11px] font-black text-[#16215c]">
             <span>9:41</span>
             <span className="h-1.5 w-16 rounded-full bg-[#e5e7eb]" />
@@ -128,20 +166,20 @@ function PhoneMockup() {
           <div className="space-y-4 px-4 pb-5 pt-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#6d7cff]">
-                  Paseo activo
+                <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#6d7cff]">
+                  Ahora
                 </p>
                 <h2 className="mt-1 text-xl font-black text-[#16215c]">
-                  Rocky esta en ruta
+                  Bruno esta paseando
                 </h2>
               </div>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-[#eafbf0] px-2.5 py-1 text-[11px] font-black text-[#2f8a5b]">
                 <span className="h-2 w-2 rounded-full bg-[#68d391] motion-safe:animate-pulse" />
-                Live
+                En vivo
               </span>
             </div>
 
-            <div className="relative h-36 overflow-hidden rounded-3xl bg-[#eafbf0]">
+            <div className="relative h-36 overflow-hidden rounded-[1.7rem] bg-[#eafbf0]">
               <div
                 className="absolute inset-0 opacity-70"
                 style={{
@@ -187,9 +225,6 @@ function PhoneMockup() {
                   strokeWidth="4"
                 />
               </svg>
-              <span className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#6d7cff] text-white shadow-lg">
-                <Navigation className="h-5 w-5" />
-              </span>
               <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-black text-[#16215c] shadow-sm">
                 <MapPin className="h-3.5 w-3.5 text-[#68d391]" />
                 Parque Laureles
@@ -199,7 +234,7 @@ function PhoneMockup() {
             <div className="grid grid-cols-2 gap-3">
               <div className="rounded-2xl border border-[#e5e7eb] bg-white p-3">
                 <p className="text-[11px] font-semibold text-[#687280]">
-                  Duracion
+                  Tiempo
                 </p>
                 <p className="mt-1 text-lg font-black text-[#16215c]">
                   28:47
@@ -228,7 +263,7 @@ function PhoneMockup() {
                     Paseadora verificada · 4.9 estrellas
                   </p>
                 </div>
-                <CheckCircle2 className="h-5 w-5 text-[#68d391]" />
+                <Star className="h-5 w-5 fill-[#f6c86a] text-[#f6c86a]" />
               </div>
             </div>
           </div>
@@ -241,13 +276,16 @@ function PhoneMockup() {
 export default function LandingPage() {
   return (
     <main className="overflow-hidden bg-[#fbfcff] text-[#16215c]">
-      <header className="sticky top-0 z-40 border-b border-white/70 bg-[#fbfcff]/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-white/70 bg-[#fbfcff]/85 backdrop-blur-xl">
         <nav
           className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8"
           aria-label="Principal"
         >
-          <a href="#inicio" className="rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#6d7cff]">
-            <BrandMark compact />
+          <a
+            href="#inicio"
+            className="rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#6d7cff]"
+          >
+            <BrandMark />
           </a>
           <div className="hidden items-center gap-1 md:flex">
             {navLinks.map((link) => (
@@ -265,34 +303,34 @@ export default function LandingPage() {
             className="inline-flex h-11 items-center gap-2 rounded-2xl bg-[#6d7cff] px-4 text-sm font-black text-white shadow-lg shadow-[#6d7cff]/25 transition hover:-translate-y-0.5 hover:bg-[#5a69f0]"
           >
             <Download className="h-4 w-4" />
-            APK
+            Descargar
           </a>
         </nav>
       </header>
 
       <section
         id="inicio"
-        className="relative mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl items-center gap-14 px-5 py-12 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:py-16"
+        className="relative mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl items-center gap-14 px-5 py-12 sm:px-8 lg:grid-cols-[1.04fr_0.96fr] lg:py-16"
       >
         <div className="absolute inset-0 -z-10">
           <div className="absolute left-0 top-16 h-72 w-72 rounded-full bg-[#eef1ff] blur-3xl" />
-          <div className="absolute right-8 top-28 h-80 w-80 rounded-full bg-[#e8fbf8] blur-3xl" />
-          <div className="absolute bottom-10 left-1/3 h-72 w-72 rounded-full bg-[#fff7e6] blur-3xl" />
+          <div className="absolute right-10 top-28 h-80 w-80 rounded-full bg-[#e8fbf8] blur-3xl" />
+          <div className="absolute bottom-8 left-1/3 h-72 w-72 rounded-full bg-[#fff7e6] blur-3xl" />
         </div>
 
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-[#6d7cff]/15 bg-white px-3 py-2 text-sm font-black text-[#6d7cff] shadow-sm">
             <Sparkles className="h-4 w-4" />
-            Ecosistema movil para cuidado pet care
+            Cuidado para mascotas, claro y conectado
           </div>
 
           <h1 className="mt-6 max-w-4xl text-5xl font-black leading-[1.02] tracking-normal text-[#16215c] sm:text-6xl lg:text-7xl">
-            Paseos, veterinarias y bienestar conectados en una sola app.
+            Paseos seguros y cuidado diario para quienes mas quieres.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-[#526071]">
-            Balto acompana a duenos, walkers y negocios con rutas en vivo,
-            perfiles verificados, servicios cercanos y una experiencia visual
-            tan clara como el cuidado que promete.
+            Balto reune paseadores verificados, seguimiento en vivo,
+            veterinarias cercanas y recordatorios utiles para que cada mascota
+            este acompanada antes, durante y despues del paseo.
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -307,66 +345,107 @@ export default function LandingPage() {
               href="#paseos"
               className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl border border-[#dfe5ef] bg-white px-6 text-base font-black text-[#16215c] shadow-sm transition hover:-translate-y-1 hover:border-[#6d7cff]/35"
             >
-              Ver experiencia
+              Explorar la app
               <ArrowRight className="h-5 w-5" />
             </a>
           </div>
 
           <div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-3">
-            {trustStats.map((stat) => (
+            {[
+              ["Ruta en vivo", "sabes donde esta tu perro"],
+              ["Walkers KYC", "perfiles revisados"],
+              ["Pet care", "servicios cerca de casa"],
+            ].map(([title, text]) => (
               <div
-                key={stat.label}
+                key={title}
                 className="rounded-3xl border border-white bg-white/75 p-4 shadow-sm backdrop-blur"
               >
-                <p className="text-2xl font-black text-[#16215c]">
-                  {stat.value}
-                </p>
+                <p className="text-lg font-black text-[#16215c]">{title}</p>
                 <p className="mt-1 text-sm font-semibold leading-5 text-[#687280]">
-                  {stat.label}
+                  {text}
                 </p>
               </div>
             ))}
           </div>
         </div>
 
-        <PhoneMockup />
+        <div className="relative">
+          <div className="absolute -right-2 top-1 hidden h-40 w-40 rotate-6 overflow-hidden border-[10px] border-white shadow-2xl shadow-[#16215c]/12 sm:block">
+            <PetPhoto
+              src={images.puppies}
+              alt="Cachorros jugando"
+              shape="55% 45% 47% 53% / 48% 58% 42% 52%"
+            />
+          </div>
+          <AppPreview />
+        </div>
       </section>
 
       <section id="paseos" className="px-5 py-18 sm:px-8 sm:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
-            <div className="rounded-[2rem] bg-[#16215c] p-8 text-white shadow-2xl shadow-[#16215c]/15">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/12">
-                <PawPrint className="h-7 w-7 text-[#68d391]" />
-              </div>
-              <h2 className="mt-7 text-4xl font-black tracking-normal">
-                Cada paseo se siente acompanado, no improvisado.
-              </h2>
-              <p className="mt-4 leading-7 text-white/76">
-                La landing debe vender confianza antes que tecnologia: Balto
-                muestra ruta, estado, walker, tiempos y actividad con una
-                lectura rapida y humana.
-              </p>
+        <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="relative min-h-[480px]">
+            <div className="absolute left-0 top-4 h-[360px] w-[74%] overflow-hidden shadow-2xl shadow-[#16215c]/12">
+              <PetPhoto
+                src={images.walking}
+                alt="Persona paseando con un perro"
+                shape="33% 67% 50% 50% / 48% 38% 62% 52%"
+              />
             </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              {reviewFlow.map((item, index) => (
-                <article
-                  key={item}
-                  className="group rounded-[2rem] border border-[#e5e7eb] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-[#16215c]/8"
-                >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eef1ff] text-sm font-black text-[#6d7cff]">
-                    0{index + 1}
+            <div className="absolute bottom-0 right-0 w-[58%] rounded-[2rem] border border-white bg-white p-4 shadow-2xl shadow-[#16215c]/12">
+              <div className="rounded-[1.4rem] bg-[#eafbf0] p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-black text-[#2f8a5b]">
+                    Paseo activo
                   </span>
-                  <h3 className="mt-6 text-xl font-black text-[#16215c]">
-                    {item}
+                  <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-[#2f8a5b]">
+                    Live
+                  </span>
+                </div>
+                <div className="mt-5 space-y-3">
+                  {["Casa", "Parque", "Regreso"].map((item, index) => (
+                    <div key={item} className="flex items-center gap-3">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-black text-[#68d391]">
+                        {index + 1}
+                      </span>
+                      <div className="h-2 flex-1 rounded-full bg-white">
+                        <div
+                          className="h-full rounded-full bg-[#68d391]"
+                          style={{ width: `${52 + index * 18}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.18em] text-[#68d391]">
+              Paseos con tranquilidad
+            </p>
+            <h2 className="mt-3 text-4xl font-black tracking-normal text-[#16215c] sm:text-5xl">
+              Tu perro sale a caminar. Tu sigues todo desde Balto.
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-[#526071]">
+              Agenda paseos, confirma quien lo acompana y revisa la ruta sin
+              escribir mil mensajes. La app pone lo importante en primer plano:
+              seguridad, tiempo, distancia y estado del recorrido.
+            </p>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {featureCards.slice(0, 3).map(({ title, description, icon: Icon }) => (
+                <article
+                  key={title}
+                  className="rounded-[1.7rem] border border-[#e5e7eb] bg-white p-5 shadow-sm"
+                >
+                  <Icon className="h-6 w-6 text-[#6d7cff]" />
+                  <h3 className="mt-4 text-lg font-black text-[#16215c]">
+                    {title}
                   </h3>
-                  <div className="mt-5 h-2 rounded-full bg-[#eef1ff]">
-                    <div
-                      className="h-full rounded-full bg-[#68d391] transition-all group-hover:bg-[#6d7cff]"
-                      style={{ width: `${48 + index * 13}%` }}
-                    />
-                  </div>
+                  <p className="mt-2 text-sm leading-6 text-[#687280]">
+                    {description}
+                  </p>
                 </article>
               ))}
             </div>
@@ -374,93 +453,155 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="servicios" className="bg-white px-5 py-18 sm:px-8 sm:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-2xl">
-            <p className="text-sm font-black uppercase tracking-[0.18em] text-[#68d391]">
-              Modulos Balto
+      <section id="cuidado" className="bg-white px-5 py-18 sm:px-8 sm:py-24">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.18em] text-[#5fd6cc]">
+              Bienestar todos los dias
             </p>
             <h2 className="mt-3 text-4xl font-black tracking-normal text-[#16215c] sm:text-5xl">
-              Una paleta por contexto, una experiencia sin ruido.
+              No es solo sacar a pasear. Es cuidar una rutina.
             </h2>
+            <p className="mt-5 text-lg leading-8 text-[#526071]">
+              Balto ayuda a tener presente la informacion de cada mascota,
+              recordar cuidados y mirar el historial para tomar mejores
+              decisiones en casa.
+            </p>
+
+            <div className="mt-8 space-y-3">
+              {careHighlights.map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center gap-3 rounded-2xl border border-[#e5e7eb] bg-[#fbfcff] p-4"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#e8fbf8] text-[#16857d]">
+                    <Heart className="h-5 w-5" />
+                  </span>
+                  <span className="font-bold text-[#16215c]">{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="mt-10 grid gap-5 lg:grid-cols-3">
-            {modules.map(({ title, description, icon: Icon, tone }) => (
-              <article
-                key={title}
-                className="rounded-[2rem] border border-[#e5e7eb] bg-[#fbfcff] p-6 shadow-sm"
-              >
-                <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${tone}`}>
-                  <Icon className="h-7 w-7" />
-                </div>
-                <h3 className="mt-7 text-2xl font-black text-[#16215c]">
-                  {title}
-                </h3>
-                <p className="mt-3 leading-7 text-[#687280]">{description}</p>
-              </article>
-            ))}
+          <div className="relative min-h-[520px]">
+            <div className="absolute right-0 top-0 h-[330px] w-[68%] overflow-hidden shadow-2xl shadow-[#16215c]/12">
+              <PetPhoto
+                src={images.cat}
+                alt="Gato en una casa tranquila"
+                shape="58% 42% 60% 40% / 44% 54% 46% 56%"
+              />
+            </div>
+            <div className="absolute bottom-8 left-0 h-[300px] w-[58%] overflow-hidden border-[10px] border-white shadow-2xl shadow-[#16215c]/12">
+              <PetPhoto
+                src={images.puppies}
+                alt="Cachorros acompanados"
+                shape="37% 63% 44% 56% / 52% 38% 62% 48%"
+              />
+            </div>
+            <div className="absolute bottom-0 right-6 max-w-xs rounded-[2rem] bg-[#16215c] p-5 text-white shadow-2xl shadow-[#16215c]/20">
+              <div className="flex items-center gap-2">
+                <Bot className="h-5 w-5 text-[#5fd6cc]" />
+                <p className="text-sm font-black">Balto Copilot</p>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-white/80">
+                Bruno tuvo una ruta intensa. Hoy conviene una caminata mas
+                suave y agua al llegar a casa.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="ia" className="px-5 py-18 sm:px-8 sm:py-24">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-2">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#e8fbf8] px-3 py-2 text-sm font-black text-[#16857d]">
-              <WandSparkles className="h-4 w-4" />
-              Cuidado inteligente
+      <section id="servicios" className="px-5 py-18 sm:px-8 sm:py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid items-end gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <p className="text-sm font-black uppercase tracking-[0.18em] text-[#f6c86a]">
+                Servicios pet care
+              </p>
+              <h2 className="mt-3 text-4xl font-black tracking-normal text-[#16215c] sm:text-5xl">
+                Veterinarias y aliados para completar el cuidado.
+              </h2>
             </div>
-            <h2 className="mt-5 text-4xl font-black tracking-normal text-[#16215c] sm:text-5xl">
-              Balto tambien piensa en lo que pasa despues del paseo.
-            </h2>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-[#526071]">
-              Recomendaciones, recordatorios, historial y senales de bienestar
-              ayudan a que la app se sienta viva, util y cercana.
+            <p className="text-lg leading-8 text-[#526071]">
+              Cuando necesitas algo mas que un paseo, Balto te acerca a
+              negocios y servicios para mascotas, con informacion clara para
+              decidir mejor.
             </p>
           </div>
 
-          <div className="rounded-[2rem] border border-[#dfe5ef] bg-white p-5 shadow-xl shadow-[#16215c]/8">
-            <div className="rounded-[1.5rem] bg-[#e8fbf8] p-5">
-              <div className="flex items-start gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#5fd6cc] text-white">
-                  <Bot className="h-6 w-6" />
-                </div>
-                <div className="rounded-3xl rounded-tl-sm bg-white p-4 shadow-sm">
-                  <p className="font-bold leading-7 text-[#16215c]">
-                    Rocky tuvo una ruta intensa. Hoy conviene una caminata mas
-                    corta y agua apenas llegue a casa.
+          <div className="mt-10 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+            <div className="relative min-h-[440px] overflow-hidden rounded-[2.5rem] bg-[#fcf8ee] p-6">
+              <PetPhoto
+                src={images.vet}
+                alt="Veterinaria revisando a un perro"
+                className="absolute inset-6 h-[calc(100%-3rem)] w-[calc(100%-3rem)]"
+                shape="36% 64% 52% 48% / 52% 46% 54% 48%"
+              />
+              <div className="absolute bottom-8 left-8 max-w-sm rounded-[1.7rem] bg-white/92 p-5 shadow-xl backdrop-blur">
+                <Stethoscope className="h-6 w-6 text-[#b56e00]" />
+                <h3 className="mt-3 text-xl font-black text-[#16215c]">
+                  Encuentra ayuda cerca
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-[#687280]">
+                  Veterinarias, servicios y perfiles para cuidar mejor a tu
+                  mascota cuando lo necesite.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid gap-5">
+              {[
+                {
+                  title: "Perfiles claros",
+                  text: "Mira servicios, informacion basica y disponibilidad.",
+                  icon: Users,
+                },
+                {
+                  title: "Recordatorios utiles",
+                  text: "Ten presente lo importante sin saturarte.",
+                  icon: Bell,
+                },
+                {
+                  title: "Confianza primero",
+                  text: "La app prioriza perfiles revisados y experiencias seguras.",
+                  icon: ShieldCheck,
+                },
+                {
+                  title: "Todo en un lugar",
+                  text: "Paseos, mascota, historial y servicios conectados.",
+                  icon: HeartHandshake,
+                },
+              ].map(({ title, text, icon: Icon }) => (
+                <article
+                  key={title}
+                  className="rounded-[1.7rem] border border-[#e5e7eb] bg-white p-5 shadow-sm"
+                >
+                  <Icon className="h-6 w-6 text-[#6d7cff]" />
+                  <h3 className="mt-4 text-lg font-black text-[#16215c]">
+                    {title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-[#687280]">
+                    {text}
                   </p>
-                </div>
-              </div>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {["Rutina semanal", "Alertas suaves", "Historial claro", "Tips de bienestar"].map(
-                  (item) => (
-                    <div
-                      key={item}
-                      className="rounded-2xl bg-white/80 px-4 py-3 text-sm font-black text-[#16215c]"
-                    >
-                      {item}
-                    </div>
-                  ),
-                )}
-              </div>
+                </article>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       <section id="apk" className="px-5 pb-20 sm:px-8 sm:pb-28">
-        <div className="mx-auto max-w-7xl rounded-[2.4rem] bg-[#6d7cff] p-6 text-white shadow-2xl shadow-[#6d7cff]/20 sm:p-10">
-          <div className="grid items-center gap-10 lg:grid-cols-[1fr_0.72fr]">
-            <div>
-              <BrandMark />
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2.4rem] bg-[#6d7cff] text-white shadow-2xl shadow-[#6d7cff]/20">
+          <div className="grid items-center gap-0 lg:grid-cols-[1fr_0.76fr]">
+            <div className="p-6 sm:p-10">
+              <BrandMark light />
               <h2 className="mt-8 max-w-3xl text-4xl font-black tracking-normal sm:text-5xl">
-                Descarga Balto para Android y prueba el ecosistema completo.
+                Lleva Balto en el celular y empieza a cuidar mejor cada salida.
               </h2>
               <p className="mt-4 max-w-2xl text-lg leading-8 text-white/82">
-                APK publico para usuarios. El backoffice administrativo se
-                mantiene privado y separado de esta experiencia.
+                Descarga el APK para Android y prueba una experiencia pensada
+                para duenos de mascotas, paseadores y servicios pet care.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a
@@ -476,34 +617,30 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="rounded-[2rem] bg-white p-6 text-[#16215c] shadow-xl">
-              <div className="flex items-center gap-3">
-                <Image
-                  src="/balto-app-icon.png"
-                  alt=""
-                  width={64}
-                  height={64}
-                  className="rounded-2xl"
-                />
-                <div>
-                  <p className="text-xl font-black">balto.apk</p>
-                  <p className="text-sm font-semibold text-[#687280]">
-                    Android · instalacion directa
-                  </p>
-                </div>
-              </div>
-              <div className="mt-6 space-y-3">
-                {[
-                  { icon: ShieldCheck, text: "Walkers con verificacion KYC" },
-                  { icon: Stethoscope, text: "Veterinarias revisadas" },
-                  { icon: HeartHandshake, text: "Experiencia para duenos" },
-                  { icon: Users, text: "Comunidad pet care conectada" },
-                ].map(({ icon: Icon, text }) => (
-                  <div key={text} className="flex items-center gap-3 rounded-2xl bg-[#f4f6fb] p-3">
-                    <Icon className="h-5 w-5 text-[#6d7cff]" />
-                    <span className="text-sm font-black">{text}</span>
+            <div className="relative min-h-[460px] bg-[#eef1ff]">
+              <PetPhoto
+                src={images.hero}
+                alt="Persona cuidando una mascota"
+                className="absolute inset-0"
+                shape="0"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#16215c]/70 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 rounded-[1.7rem] bg-white/92 p-5 text-[#16215c] shadow-xl backdrop-blur">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/balto-app-icon.png"
+                    alt=""
+                    width={56}
+                    height={56}
+                    className="rounded-2xl"
+                  />
+                  <div>
+                    <p className="text-xl font-black">balto.apk</p>
+                    <p className="text-sm font-semibold text-[#687280]">
+                      Android · instalacion directa
+                    </p>
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
