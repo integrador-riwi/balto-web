@@ -1,6 +1,5 @@
 import Image from "next/image";
 import {
-  ArrowRight,
   Bell,
   Bot,
   CalendarCheck,
@@ -18,7 +17,6 @@ import {
 } from "lucide-react";
 
 const apkUrl = process.env.NEXT_PUBLIC_APK_URL ?? "/downloads/balto.apk";
-const appVersion = process.env.NEXT_PUBLIC_APP_VERSION ?? "local";
 
 const images = {
   hero:
@@ -32,13 +30,6 @@ const images = {
   vet:
     "https://images.pexels.com/photos/6235020/pexels-photo-6235020.jpeg?auto=compress&cs=tinysrgb&w=1200",
 };
-
-const navLinks = [
-  { label: "Paseos", href: "#paseos" },
-  { label: "Cuidado", href: "#cuidado" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Descarga", href: "#apk" },
-];
 
 const featureCards = [
   {
@@ -92,13 +83,6 @@ function BrandMark({ light = false }: { light?: boolean }) {
           }`}
         >
           Balto
-        </p>
-        <p
-          className={`mt-1 text-xs font-black uppercase tracking-[0.18em] ${
-            light ? "text-white/70" : "text-[#68d391]"
-          }`}
-        >
-          Walks
         </p>
       </div>
     </div>
@@ -276,41 +260,9 @@ function AppPreview() {
 export default function LandingPage() {
   return (
     <main className="overflow-hidden bg-[#fbfcff] text-[#16215c]">
-      <header className="sticky top-0 z-40 border-b border-white/70 bg-[#fbfcff]/85 backdrop-blur-xl">
-        <nav
-          className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8"
-          aria-label="Principal"
-        >
-          <a
-            href="#inicio"
-            className="rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#6d7cff]"
-          >
-            <BrandMark />
-          </a>
-          <div className="hidden items-center gap-1 md:flex">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="rounded-xl px-4 py-2 text-sm font-bold text-[#687280] transition hover:bg-white hover:text-[#16215c]"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-          <a
-            href={apkUrl}
-            className="inline-flex h-11 items-center gap-2 rounded-2xl bg-[#6d7cff] px-4 text-sm font-black text-white shadow-lg shadow-[#6d7cff]/25 transition hover:-translate-y-0.5 hover:bg-[#5a69f0]"
-          >
-            <Download className="h-4 w-4" />
-            Descargar
-          </a>
-        </nav>
-      </header>
-
       <section
         id="inicio"
-        className="relative mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl items-center gap-14 px-5 py-12 sm:px-8 lg:grid-cols-[1.04fr_0.96fr] lg:py-16"
+        className="relative mx-auto grid min-h-screen max-w-7xl items-center gap-14 px-5 py-12 sm:px-8 lg:grid-cols-[1.04fr_0.96fr] lg:py-16"
       >
         <div className="absolute inset-0 -z-10">
           <div className="absolute left-0 top-16 h-72 w-72 rounded-full bg-[#eef1ff] blur-3xl" />
@@ -340,13 +292,6 @@ export default function LandingPage() {
             >
               <Download className="h-5 w-5" />
               Descargar APK
-            </a>
-            <a
-              href="#paseos"
-              className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl border border-[#dfe5ef] bg-white px-6 text-base font-black text-[#16215c] shadow-sm transition hover:-translate-y-1 hover:border-[#6d7cff]/35"
-            >
-              Explorar la app
-              <ArrowRight className="h-5 w-5" />
             </a>
           </div>
 
@@ -611,9 +556,6 @@ export default function LandingPage() {
                   <Download className="h-5 w-5" />
                   Descargar APK
                 </a>
-                <span className="inline-flex h-14 items-center justify-center rounded-2xl bg-white/12 px-5 text-sm font-black text-white">
-                  Version {appVersion}
-                </span>
               </div>
             </div>
 
