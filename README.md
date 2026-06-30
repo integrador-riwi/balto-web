@@ -82,6 +82,7 @@ Antes de abrir un pull request o desplegar:
 
 ```bash
 pnpm lint
+pnpm typecheck
 pnpm build
 ```
 
@@ -157,17 +158,48 @@ El dashboard actual consume usuarios reales desde `/api/users` del backend,
 calcula metricas iniciales y permite revisar veterinarias/walkers con sus
 documentos para actualizar `verification_status`.
 
-## Despliegue futuro en Vercel
+## CI/CD
 
-Cuando se pase a despliegue, conecta solamente este repo (`174-balto-web`) en
-Vercel:
+El repositorio incluye GitHub Actions en `.github/workflows/ci.yml`.
+
+El workflow corre en pull requests y pushes a `main`, `staging`, `dev` y
+`feature/**`:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm lint
+pnpm typecheck
+pnpm build
+```
+
+## Despliegue en Vercel
+
+Conecta solamente este repo (`balto-web`) en Vercel:
 
 ```txt
 Framework Preset: Next.js
-Install Command: pnpm install
+Install Command: pnpm install --frozen-lockfile
 Build Command: pnpm build
 Output Directory: automatico
 Node.js Version: 20.x
 ```
 
-Configura en Vercel las mismas variables de `.env.example` con valores reales.
+La configuracion base vive en `vercel.json`.
+
+Configura en Vercel las mismas variables de `.env.example` con valores reales:
+
+```env
+NEXT_PUBLIC_API_URL=https://tu-backend/api
+NEXT_PUBLIC_APK_URL=/downloads/balto.apk
+NEXT_PUBLIC_APP_VERSION=1.0.0
+```
+
+Recomendacion de ramas en Vercel:
+
+```txt
+Production Branch: main
+Preview Deployments: pull requests
+```
+
+Antes de usar `main` como produccion, mergea la rama que contiene el dashboard
+actual (`feature/dashboard-foundation`) hacia `main`.
